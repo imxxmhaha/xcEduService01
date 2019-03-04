@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 @SpringBootApplication
 @EntityScan("com.xuecheng.framework.domain.cms") //扫描实体类
-@ComponentScan(basePackages = {"com.xuecheng.api","com.xuecheng.manage_cms"}) //扫描接口
+@ComponentScan(basePackages = {"com.xuecheng.api","com.xuecheng.manage_cms","com.xuecheng.framework"}) //扫描包
 //@ComponentScan(basePackages = {"com.xuecheng.manage_cms"})
 public class ManageCmsApplication {
     public static void main(String[] args) {
