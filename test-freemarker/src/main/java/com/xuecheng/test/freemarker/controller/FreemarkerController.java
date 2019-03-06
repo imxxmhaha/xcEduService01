@@ -9,6 +9,7 @@ import java.util.*;
 
 import com.xuecheng.test.freemarker.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,21 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/freemarker")
 @Controller
 public class FreemarkerController {
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @RequestMapping("/banner")
+    public String index_banner(Map<String, Object> map) {
+        ResponseEntity<Map> forEntity =
+                restTemplate.getForEntity("http://localhost:31001/cms/config/getmodel/5a791725dd573c3574ee333f",
+                        Map.class);
+        Map body = forEntity.getBody();
+        //设置模型数据
+        map.putAll(body);
+        return "index_banner";
+    }
+
 
     @RequestMapping("/test1")
     public String freemarker(Map<String, Object> map) {
@@ -33,7 +49,7 @@ public class FreemarkerController {
         stu2.setName("小红");
         stu2.setMoney(200.1f);
         stu2.setAge(19);
-        stu2.setBirthday(new  Date());
+        stu2.setBirthday(new Date());
         List<Student> friends = new ArrayList<>();
         friends.add(stu1);
         // 给第二名同学设置朋友列表
