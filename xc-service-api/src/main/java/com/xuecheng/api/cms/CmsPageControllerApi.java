@@ -9,6 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author xxm
@@ -40,4 +42,7 @@ public interface CmsPageControllerApi {
     @ApiOperation("删除页面")
     public ResponseResult delete(String id);
 
+    // 页面发布
+    @ApiOperation("页面发布")
+    public ResponseResult post(String pageId);
 }

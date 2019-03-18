@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuecheng.manage_course.dao.TeachplanMediaDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xuecheng.framework.domain.course.TeachplanMedia">
+        <id column="teachplan_id" property="teachplanId" />
+        <result column="media_id" property="mediaId" />
+        <result column="media_fileoriginalname" property="mediaFileoriginalname" />
+        <result column="media_url" property="mediaUrl" />
+        <result column="courseid" property="courseid" />
+    </resultMap>
+
+</mapper>
