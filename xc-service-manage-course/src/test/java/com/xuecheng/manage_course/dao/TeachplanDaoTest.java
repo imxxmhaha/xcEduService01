@@ -22,7 +22,7 @@ public class TeachplanDaoTest {
     @Test
     public void selectList() {
         String courseId = "4028e581617f945f01617f9dabc40000";
-        TeachplanNode teachplanNode = teachplanDao.selectList(courseId);
+        TeachplanNode teachplanNode = teachplanDao.selectTeachplanList(courseId);
         System.out.println(teachplanNode);
     }
 }

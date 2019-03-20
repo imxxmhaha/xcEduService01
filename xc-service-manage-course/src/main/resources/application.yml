@@ -50,3 +50,5 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+pagehelper:
+  helper-dialect: mysql
