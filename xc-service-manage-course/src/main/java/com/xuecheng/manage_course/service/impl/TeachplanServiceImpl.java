@@ -3,11 +3,17 @@ package com.xuecheng.manage_course.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.toolkit.IdWorker;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
+import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.dao.CourseBaseDao;
 import com.xuecheng.manage_course.dao.TeachplanDao;
@@ -27,7 +33,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author Xxm123
@@ -42,6 +48,7 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanDao, Teachplan> i
     private IdWorker idWorker;
     @Autowired
     private CourseBaseDao courseBaseDao;
+
     @Override
     public TeachplanNode findTeachplanList(String courseId) {
         TeachplanNode teachplanNode = teachplanDao.selectTeachplanList(courseId);
@@ -51,7 +58,7 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanDao, Teachplan> i
     @Override
     @Transactional
     public ResponseResult addTeachplan(Teachplan teachplan) {
-        if(null == teachplan || StringUtils.isEmpty(teachplan.getCourseid())|| StringUtils.isEmpty(teachplan.getPname())){
+        if (null == teachplan || StringUtils.isEmpty(teachplan.getCourseid()) || StringUtils.isEmpty(teachplan.getPname())) {
             ExceptionCast.cast(CommonCode.INVALID_PARAM);
         }
 
@@ -60,35 +67,62 @@ public class TeachplanServiceImpl extends ServiceImpl<TeachplanDao, Teachplan> i
         // 处理parentId
         String parentid = teachplan.getParentid();
 
-        if(StringUtils.isEmpty(parentid)){
+        if (StringUtils.isEmpty(parentid)) {
             parentid = this.getTeachplanRoot(courseid);
         }
         Teachplan parentTeachplan = teachplanDao.selectById(parentid);
-        String parentGrade =StringUtils.defaultString(parentTeachplan.getGrade(),"1") ;
+        String parentGrade = StringUtils.defaultString(parentTeachplan.getGrade(), "1");
         Teachplan teachplanNew = new Teachplan();
-        BeanUtils.copyProperties(teachplan,teachplanNew);
-        teachplanNew.setId(idWorker.getId()+"");
+        BeanUtils.copyProperties(teachplan, teachplanNew);
+        teachplanNew.setId(idWorker.getId() + "");
         teachplanNew.setParentid(parentid);
         teachplanNew.setCourseid(courseid);
-        teachplanNew.setGrade(String.valueOf(Integer.parseInt(parentGrade) +1));
-        teachplanNew.setStatus(StringUtils.defaultString(teachplan.getStatus(),"0"));
+        teachplanNew.setGrade(String.valueOf(Integer.parseInt(parentGrade) + 1));
+        teachplanNew.setStatus(StringUtils.defaultString(teachplan.getStatus(), "0"));
         teachplanDao.insert(teachplanNew);
 
         return ResponseResult.SUCCESS();
     }
 
-    private String getTeachplanRoot(String courseId){
+    @Override
+    public QueryResponseResult<CourseInfo> findCourseList(int page, int size, CourseListRequest courseListRequest) {
+        if (courseListRequest == null) {
+            courseListRequest = new CourseListRequest();
+        }
+        if (page <= 0) {
+            page = 0;
+        }
+        if (size <= 0) {
+            size = 20;
+        }
+        //设置分页参数
+        PageHelper.startPage(page, size);
+        //分页查询
+        Page<CourseInfo> courseListPage = courseBaseDao.findCourseListPage(courseListRequest);
+        //查询列表
+        List<CourseInfo> list = courseListPage.getResult();
+        //总记录数
+        long total = courseListPage.getTotal();
+        //查询结果集
+        QueryResult<CourseInfo> courseIncfoQueryResult = new QueryResult<CourseInfo>();
+        courseIncfoQueryResult.setList(list);
+        courseIncfoQueryResult.setTotal(total);
+        return QueryResponseResult.SUCCESS(courseIncfoQueryResult);
+        //return new QueryResponseResult<CourseInfo>(CommonCode.SUCCESS, courseIncfoQueryResult);
+    }
+
+    private String getTeachplanRoot(String courseId) {
         CourseBase courseBase = courseBaseDao.selectById(courseId);
-        if(null == courseBase){
+        if (null == courseBase) {
             return null;
         }
         Wrapper<Teachplan> ew = new EntityWrapper();
-        ew = ew.eq("courseid", courseId).eq("parentid",0);
+        ew = ew.eq("courseid", courseId).eq("parentid", 0);
         List<Teachplan> list = teachplanDao.selectList(ew);
-        if(CollectionUtils.isEmpty(list)){
+        if (CollectionUtils.isEmpty(list)) {
             // 查不到根节点,那么自动添加一个根节点
             Teachplan teachplan = new Teachplan();
-            teachplan.setId(idWorker.getId()+"");
+            teachplan.setId(idWorker.getId() + "");
             teachplan.setParentid("0");
             teachplan.setGrade("1");
             teachplan.setPname(courseBase.getName());

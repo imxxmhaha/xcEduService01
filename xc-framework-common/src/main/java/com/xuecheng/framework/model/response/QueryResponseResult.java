@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class QueryResponseResult extends ResponseResult {
+public class QueryResponseResult<T> extends ResponseResult {
 
     QueryResult queryResult;
 
@@ -14,4 +14,11 @@ public class QueryResponseResult extends ResponseResult {
        this.queryResult = queryResult;
     }
 
+    public static QueryResponseResult SUCCESS(QueryResult queryResult){
+        return new QueryResponseResult(CommonCode.SUCCESS,queryResult);
+    }
+
+    public static QueryResponseResult FAIL(QueryResult queryResult){
+        return new QueryResponseResult(CommonCode.FAIL,queryResult);
+    }
 }

@@ -18,4 +18,16 @@
         <result column="user_id" property="userId" />
     </resultMap>
 
+    <select id="findCourseListPage" resultType="com.xuecheng.framework.domain.course.ext.CourseInfo">
+        SELECT
+            course_base.*,
+            (SELECT pic FROM course_pic WHERE courseid = course_base.id) pic
+        FROM course_base
+        <where>
+            <if test="courseListRequest != null and courseListRequest.companyId !=null">
+                and  company_id like  CONCAT('%', #{courseListRequest.companyId}, '%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

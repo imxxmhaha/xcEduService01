@@ -13,4 +13,7 @@ import com.xuecheng.framework.domain.course.CourseMarket;
  */
 public interface CourseMarketService extends IService<CourseMarket> {
 
+    CourseMarket updateCourseMarket(String id, CourseMarket courseMarket);
+
+    CourseMarket getCourseMarketById(String courseId);
 }

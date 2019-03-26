@@ -2,7 +2,10 @@ package com.xuecheng.manage_course.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 
 /**
@@ -17,4 +20,6 @@ public interface TeachplanService extends IService<Teachplan> {
     TeachplanNode findTeachplanList(String courseId);
 
     ResponseResult addTeachplan(Teachplan teachplan);
+
+    QueryResponseResult<CourseInfo> findCourseList(int page, int size, CourseListRequest courseListRequest);
 }

@@ -2,6 +2,7 @@ package com.xuecheng.manage_course.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.xuecheng.framework.domain.course.Category;
+import com.xuecheng.framework.domain.course.ext.CategoryNode;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.xuecheng.framework.domain.course.Category;
  */
 public interface CategoryService extends IService<Category> {
 
+    CategoryNode findCategoryList();
 }

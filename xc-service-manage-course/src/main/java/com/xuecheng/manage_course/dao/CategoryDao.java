@@ -2,6 +2,7 @@ package com.xuecheng.manage_course.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.xuecheng.framework.domain.course.Category;
+import com.xuecheng.framework.domain.course.ext.CategoryNode;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.xuecheng.framework.domain.course.Category;
  */
 public interface CategoryDao extends BaseMapper<Category> {
 
+    CategoryNode findCategoryList();
 }

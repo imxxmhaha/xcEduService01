@@ -1,6 +1,7 @@
 package com.xuecheng.framework.domain.filesystem.response;
 
 import com.xuecheng.framework.domain.filesystem.FileSystem;
+import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.framework.model.response.ResultCode;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,4 +21,8 @@ public class UploadFileResult extends ResponseResult{
         this.fileSystem = fileSystem;
     }
 
+    public static UploadFileResult success(FileSystem fileSystem){
+        UploadFileResult uploadFileResult = new UploadFileResult(CommonCode.SUCCESS,fileSystem);
+        return uploadFileResult;
+    }
 }
