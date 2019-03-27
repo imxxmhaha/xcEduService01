@@ -27,6 +27,11 @@
             之后依赖该项目的项目如果想要使用devtools，需要重新引入 -->
             <optional>true</optional>
         </dependency>
+        <!--feign相关-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.xuecheng</groupId>
