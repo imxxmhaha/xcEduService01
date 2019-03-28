@@ -1,5 +1,6 @@
 package com.xuecheng.api.course;
 
+import com.xuecheng.framework.domain.cms.ext.CourseView;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CourseMarket;
 import com.xuecheng.framework.domain.course.CoursePic;
@@ -8,6 +9,7 @@ import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.domain.course.response.AddCourseResult;
+import com.xuecheng.framework.domain.course.response.CoursePublishResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
@@ -56,4 +58,11 @@ public interface CourseControllerApi {
 
     @ApiOperation("删除课程图片")
     public ResponseResult deleteCoursePic(String courseId);
+
+
+    @ApiOperation("课程视图查询")
+    public CourseView courseView(String id);
+
+    @ApiOperation("预览课程")
+    public CoursePublishResult preview(String id);
 }

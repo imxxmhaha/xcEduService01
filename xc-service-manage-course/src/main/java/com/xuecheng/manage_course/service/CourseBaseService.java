@@ -1,9 +1,11 @@
 package com.xuecheng.manage_course.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.xuecheng.framework.domain.cms.ext.CourseView;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.response.AddCourseResult;
+import com.xuecheng.framework.domain.course.response.CoursePublishResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 
 /**
@@ -27,4 +29,18 @@ public interface CourseBaseService extends IService<CourseBase> {
     CoursePic findCoursePic(String courseId);
 
     ResponseResult deleteCoursePicById(String courseId);
+
+    /**
+     * 查询课程视图
+     * @param id
+     * @return
+     */
+    CourseView getCourseView(String id);
+
+    /**
+     * 课程预览
+     * @param id
+     * @return
+     */
+    CoursePublishResult preview(String id);
 }

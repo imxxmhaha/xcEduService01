@@ -39,6 +39,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -362,5 +363,20 @@ public class PageService {
         cmsPage.setHtmlFileId(objectId.toHexString());
         cmsPageRepository.save(cmsPage);
         return cmsPage;
+    }
+
+    /**
+     * 保存页面,有则更新,没有则添加
+     * @param cmsPage
+     * @return
+     */
+    public CmsPageResult save( CmsPage cmsPage) {
+        // 判断页面是否存在
+        CmsPage cmsPage1 = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
+        if(null != cmsPage1){
+            // 进行更新
+           return this.update(cmsPage1.getPageId(),cmsPage);
+        }
+        return this.add(cmsPage);
     }
 }

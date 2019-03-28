@@ -29,6 +29,7 @@ public class CmsPagePreViewController extends BaseController {
         if(StringUtils.isNotEmpty(pageHtml)){
             try {
                 ServletOutputStream outputStream = response.getOutputStream();
+                response.setHeader("Content-type","text/html;charset=utf-8");
                 outputStream.write(pageHtml.getBytes("UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();

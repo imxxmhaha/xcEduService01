@@ -68,3 +68,11 @@ mybatis-plus:
     cache-enabled: false
 pagehelper:
   helper-dialect: mysql
+course:
+  publish:
+    siteId: 5a751fab6abb5044e0d19ea1
+    templateId: 6ad9a24d68db5239b8fef199
+    previewUrl: http://www.xuecheng.com/cms/preview/
+    pageWebPath: /course/detail/
+    pagePhysicalPath: /course/detail/
+    dataUrlPre: http://localhost:31200/course/courseview/
