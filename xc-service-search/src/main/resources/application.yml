@@ -1,0 +1,10 @@
+server:
+  port: ${port:40100}
+spring:
+  application:
+    name: xc-search-service
+  data:
+    elasticsearch:
+      cluster-nodes: 127.0.0.1:9300
+      cluster-name: xuecheng
+      repositories: true
