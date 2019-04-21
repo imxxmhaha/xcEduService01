@@ -32,6 +32,17 @@
             <artifactId>spring-data-commons</artifactId>
             <version>2.1.2.RELEASE</version>
         </dependency>
+
+        <!--ES兼容原生操作开始-->
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>6.2.1</version>
+        </dependency>
+
+        <!--ES兼容原生操作结束-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
