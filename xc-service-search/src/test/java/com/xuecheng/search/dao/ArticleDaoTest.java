@@ -7,8 +7,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.Operator;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -56,6 +55,14 @@ public class ArticleDaoTest {
         Page<Article> articles = articleDao.findAll(pageable);
         System.out.println(articles);
     }
+
+    @Test
+    public void testBoolFindAll() {
+        Pageable pageable = PageRequest.of(1 - 1, 5);
+        Page<Article> articles = articleDao.testBoolQuery("开发","1",pageable);
+        System.out.println(articles);
+    }
+
 
     /**
      * 原生API
@@ -124,16 +131,16 @@ public class ArticleDaoTest {
     @Test
     public void testSearchTermQuery() throws IOException {
         // 搜索请求对象,并指定index
-        SearchRequest searchRequest = new SearchRequest("xxm_index");
+        SearchRequest searchRequest = new SearchRequest("xc_course");
         // 设置type
-        searchRequest.types("xxm");
+        searchRequest.types("doc");
         // 搜索源构建者对象
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         // 搜索,有什么查询过滤条件,就往searchSourceBuilder.query这个里面塞
-        searchSourceBuilder.query(QueryBuilders.termQuery("title", "添加测试"));
+        searchSourceBuilder.query(QueryBuilders.termQuery("name", "spring"));
         //searchSourceBuilder.query(QueryBuilders.termQuery("id", "1118116038718918656"));
         // source源字段过滤 ,第一个参数结果集包括哪些字段，第二个参数表示结果集不包括哪些字段
-        searchSourceBuilder.fetchSource(new String[]{"id", "title", "content"}, new String[]{});
+        searchSourceBuilder.fetchSource(new String[]{"id", "title", "content","name","description"}, new String[]{});
 
 
         // 设置搜索源
@@ -242,6 +249,39 @@ public class ArticleDaoTest {
 
 
 
+    /**
+     * boolQueryBuilder
+     *   可以对多个queryBuilder进行交集,并集,非集处理
+     */
+    @Test
+    public void testBoolQuery() throws IOException {
+        // 搜索请求对象,并指定index
+        SearchRequest searchRequest = new SearchRequest("xxm_index");
+        // 设置type
+        searchRequest.types("xxm");
+        // 搜索源构建者对象
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        // source源字段过滤 ,第一个参数结果集包括哪些字段，第二个参数表示结果集不包括哪些字段
+        searchSourceBuilder.fetchSource(new String[]{"id", "title", "content"}, new String[]{});
+
+        // 搜索,有什么查询过滤条件,就往searchSourceBuilder.query这个里面塞
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        MultiMatchQueryBuilder matchQueryBuilder = QueryBuilders.multiMatchQuery("开发", "title", "content").minimumShouldMatch("50%").field("title", 10);
+        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("id", "1");
+        boolQueryBuilder.must(matchQueryBuilder);
+        boolQueryBuilder.must(termQueryBuilder);
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        // 设置搜索源
+        searchRequest.source(searchSourceBuilder);
+        // 执行搜索
+        SearchResponse searchResponse = client.search(searchRequest);
+
+        // 处理结果集
+        dealResponse(searchResponse);
+
+    }
+
 
 
 
@@ -265,6 +305,10 @@ public class ArticleDaoTest {
             System.out.println("title = " + title);
             String content = (String) sourceAsMap.get("content");
             System.out.println("content = " + content);
+            String name = (String) sourceAsMap.get("name");
+            System.out.println("name = " + name);
+            String description = (String) sourceAsMap.get("description");
+            System.out.println("description = " + description);
         }
     }
 
