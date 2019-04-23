@@ -43,4 +43,12 @@ public interface CourseBaseService extends IService<CourseBase> {
      * @return
      */
     CoursePublishResult preview(String id);
+
+
+    /**
+     * 课程发布
+     * @param id
+     * @return
+     */
+    CoursePublishResult publish(String id);
 }
