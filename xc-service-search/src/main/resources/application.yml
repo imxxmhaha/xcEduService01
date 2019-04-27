@@ -5,12 +5,12 @@ spring:
     name: xc-search-service
   data:
     elasticsearch:
-      cluster-nodes: 127.0.0.1:9300
+      cluster-nodes: 127.0.0.1:9300,127.0.0.1:9301,127.0.0.1:9302
       cluster-name: xuecheng
       repositories: true
 xuecheng:
   elasticsearch:
-    hostlist: ${eshostlist:127.0.0.1:9200} #多个结点中间用逗号分隔
+    hostlist: ${eshostlist:127.0.0.1:9200,127.0.0.1:9201,127.0.0.1:9202} #多个结点中间用逗号分隔
   course:
     index: xc_course
     type: doc
